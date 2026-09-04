@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul Interaktif: Abstraksi Data, Sort & Filter Excel</title>
+    <style>
+        :root {
+            --primary: #217346;
+            --primary-dark: #154c2e;
+            --bg-light: #f4f6f8;
+            --text: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-light);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .card {
+            border: 1px solid #e0e0e0;
+            border-left: 5px solid var(--primary);
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 4px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        select, button, input[type="text"] {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            max-height: 450px;
+            border: 1px solid #ccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td[contenteditable="true"]:focus {
+            outline: 2px solid var(--primary);
+            background-color: #fffde7;
+        }
+
+        .tip-box {
+            background-color: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+
+        .quiz-card {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .quiz-option {
+            margin: 8px 0;
+            display: block;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .correct { color: #2e7d32; }
+        .incorrect { color: #c62828; }
+
+        .excel-ready-table {
+            user-select: all;
+        }
+        
+        .copy-btn {
+            background-color: #0288d1;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Modul Pembelajaran Excel Interaktif</h1>
+
+    <div class="section">
+        <h2>1. Abstraksi Data</h2>
+        <p><strong>Abstraksi Data</strong> adalah proses menyederhanakan data kompleks dengan hanya menampilkan informasi penting yang relevan dan menyembunyikan rincian detail yang tidak diperlukan. Pada spreadsheet (Excel), abstraksi membantu pengguna menganalisis ribuan data secara cepat tanpa terdistraksi informasi sekunder.</p>
+    </div>
+
+    <div class="section">
+        <h2>2. Pengurutan (Sort) & Penyaringan (Filter)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Sort (Mengurutkan)</h3>
+                <p>Fitur untuk menyusun data berdasarkan urutan tertentu:</p>
+                <ul>
+                    <li><strong>Ascending (A-Z / 1-9):</strong> Dari terkecil ke terbesar.</li>
+                    <li><strong>Descending (Z-A / 9-1):</strong> Dari terbesar ke terkecil.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Filter (Menyaring)</h3>
+                <p>Fitur untuk menampilkan baris data tertentu saja yang memenuhi kriteria khusus (misal: hanya menampilkan hobi "Membaca"). Baris data yang tidak sesuai disembunyikan sementara.</p>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="section">
+        <h2>3. Latihan Interaktif Excel</h2>
+        <div class="tip-box">
+            <strong>Petunjuk Praktik:</strong>
+            <ul>
+                <li><strong>Mengedit Data:</strong> Klik langsung pada sel di kolom <em>Nama, Jenis Kelamin, Hobi, atau Umur</em> untuk mengubah nilainya.</li>
+                <li><strong>Mengurutkan & Menyaring:</strong> Gunakan panel kontrol di bawah ini untuk melihat perubahan visual pada data.</li>
+            </ul>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="sortCol"><strong>Sort By:</strong></label>
+                <select id="sortCol">
+                    <option value="0">No</option>
+                    <option value="1">Nama</option>
+                    <option value="2">Jenis Kelamin</option>
+                    <option value="3">Hobi</option>
+                    <option value="4">Umur</option>
+                </select>
+                <select id="sortDir">
+                    <option value="asc">Ascending (A-Z)</option>
+                    <option value="desc">Descending (Z-A)</option>
+                </select>
+                <button onclick="applySort()">Urutkan</button>
+            </div>
+
+            <div class="control-group">
+                <label for="filterGender"><strong>Filter Gender:</strong></label>
+                <select id="filterGender" onchange="applyFilter()">
+                    <option value="">Semua</option>
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="filterHobby"><strong>Filter Hobi:</strong></label>
+                <select id="filterHobby" onchange="applyFilter()">
+                    <option value="">Semua Hobi</option>
+                </select>
+            </div>
+
+            <button onclick="resetData()" style="background-color: #d32f2f;">Reset Data</button>
+        </div>
+
+        <div class="table-container">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Hobi</th>
+                        <th>Umur</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="section">
+        <h2>4. Studi Kasus & Kuis Pemahaman</h2>
+        <div class="tip-box">
+            <strong>Studi Kasus Analisis Data Siswa:</strong><br>
+            Sebuah sekolah ingin mengelompokkan siswa untuk kegiatan pendaftaran ekstrakurikuler berdasarkan kriteria tertentu (seperti usia, jenis kelamin, dan hobi). Gunakan pemahaman tentang Abstraksi Data, Sort, dan Filter untuk menjawab soal-soal di bawah ini.
+        </div>
+
+        <div class="quiz-card">
+            <h3>Soal 1</h3>
+            <p>Fitur Excel mana yang paling tepat digunakan jika sekolah hanya ingin menampilkan daftar siswa yang memiliki hobi <strong>"Membaca"</strong> saja tanpa menghapus data siswa lainnya?</p>
+            <label class="quiz-option"><input type="radio" name="q1" value="A"> A. Sort Ascending</label>
+            <label class="quiz-option"><input type="radio" name="q1" value="B"> B. Filter</label>
+            <label class="quiz-option"><input type="radio" name="q1" value="C"> C. PivotTable</label>
+            <label class="quiz-option"><input type="radio" name="q1" value="D"> D. Sort Descending</label>
+            <button onclick="checkQ1()">Cek Jawaban</button>
+            <div id="feedbackQ1" class="feedback"></div>
+        </div>
+
+        <div class="quiz-card">
+            <h3>Soal 2</h3>
+            <p>Jika kamu melakukan <strong>Sort Ascending</strong> pada kolom <strong>Nama</strong>, huruf abjad dari nama siswa yang berada pada urutan paling atas adalah...</p>
+            <input type="text" id="q2Input" placeholder="Ketik 1 huruf..." maxlength="1">
+            <button onclick="checkQ2()">Cek Jawaban</button>
+            <div id="feedbackQ2" class="feedback"></div>
+        </div>
+
+        <div class="quiz-card">
+            <h3>Soal 3</h3>
+            <p>Jika kita ingin mencari siswa dengan <strong>Umur tertua</strong> di posisi paling atas tabel, jenis pengurutan (sorting) apa yang harus diterapkan pada kolom Umur?</p>
+            <label class="quiz-option"><input type="radio" name="q3" value="A"> A. Ascending (Terkecil ke Terbesar)</label>
+            <label class="quiz-option"><input type="radio" name="q3" value="B"> B. Filter Auto</label>
+            <label class="quiz-option"><input type="radio" name="q3" value="C"> C. Descending (Terbesar ke Terkecil)</label>
+            <label class="quiz-option"><input type="radio" name="q3" value="D"> D. Clear All Filter</label>
+            <button onclick="checkQ3()">Cek Jawaban</button>
+            <div id="feedbackQ3" class="feedback"></div>
+        </div>
+
+        <div class="quiz-card">
+            <h3>Soal 4</h3>
+            <p>Manakah dari pernyataan berikut yang paling tepat mendeskripsikan penerapan konsep <strong>Abstraksi Data</strong> di Excel?</p>
+            <label class="quiz-option"><input type="radio" name="q4" value="A"> A. Mengedit isi sel satu per satu secara manual</label>
+            <label class="quiz-option"><input type="radio" name="q4" value="B"> B. Menampilkan seluruh data detail tanpa menyaring apa pun</label>
+            <label class="quiz-option"><input type="radio" name="q4" value="C"> C. Menyaring dan menyembunyikan data yang tidak relevan agar fokus pada data penting saja</label>
+            <label class="quiz-option"><input type="radio" name="q4" value="D"> D. Menghapus data permanen dari lembar kerja</label>
+            <button onclick="checkQ4()">Cek Jawaban</button>
+            <div id="feedbackQ4" class="feedback"></div>
+        </div>
+
+        <div class="quiz-card">
+            <h3>Soal 5</h3>
+            <p>Seorang guru ingin menampilkan daftar siswa berjenis kelamin <strong>Perempuan</strong> yang menyukai hobi <strong>"Menggambar"</strong>. Fitur apa saja yang dikombinasikan untuk memenuhi kebutuhan tersebut?</p>
+            <label class="quiz-option"><input type="radio" name="q5" value="A"> A. Multiple Filter pada kolom Jenis Kelamin dan Hobi</label>
+            <label class="quiz-option"><input type="radio" name="q5" value="B"> B. Sort Ascending pada Jenis Kelamin saja</label>
+            <label class="quiz-option"><input type="radio" name="q5" value="C"> C. Delete Column pada Jenis Kelamin</label>
+            <label class="quiz-option"><input type="radio" name="q5" value="D"> D. Sort Descending pada kolom Hobi saja</label>
+            <button onclick="checkQ5()">Cek Jawaban</button>
+            <div id="feedbackQ5" class="feedback"></div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="section">
+        <h2>5. Tabel Latihan Praktik (Siap Copas ke MS Excel)</h2>
+        <p>Blok tabel di bawah ini, atau klik tombol di bawah untuk menyalin seluruh data ke clipboard, lalu <em>Paste</em> (Ctrl+V) langsung di MS Excel.</p>
+        
+        <button class="copy-btn" onclick="copyTableToClipboard()">📋 Salin Data ke Clipboard</button>
+
+        <div class="table-container">
+            <table id="copasTable" class="excel-ready-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Hobi</th>
+                        <th>Umur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Bima Pratama</td><td>Laki-laki</td><td>Sepak Bola</td><td>14</td></tr>
+                    <tr><td>2</td><td>Citra Lestari</td><td>Perempuan</td><td>Membaca</td><td>13</td></tr>
+                    <tr><td>3</td><td>Daffa Ramadhan</td><td>Laki-laki</td><td>Bermain Game</td><td>14</td></tr>
+                    <tr><td>4</td><td>Aulia Rahma</td><td>Perempuan</td><td>Menulis</td><td>13</td></tr>
+                    <tr><td>5</td><td>Fajar Nugroho</td><td>Laki-laki</td><td>Badminton</td><td>15</td></tr>
+                    <tr><td>6</td><td>Nabila Putri</td><td>Perempuan</td><td>Memasak</td><td>14</td></tr>
+                    <tr><td>7</td><td>Rizky Maulana</td><td>Laki-laki</td><td>Sepak Bola</td><td>13</td></tr>
+                    <tr><td>8</td><td>Salsabila Azzahra</td><td>Perempuan</td><td>Membaca</td><td>14</td></tr>
+                    <tr><td>9</td><td>Gilang Saputra</td><td>Laki-laki</td><td>Bersepeda</td><td>15</td></tr>
+                    <tr><td>10</td><td>Intan Permata</td><td>Perempuan</td><td>Menulis</td><td>13</td></tr>
+                    <tr><td>11</td><td>Aldi Kurniawan</td><td>Laki-laki</td><td>Bermain Game</td><td>14</td></tr>
+                    <tr><td>12</td><td>Zahra Amalia</td><td>Perempuan</td><td>Menggambar</td><td>14</td></tr>
+                    <tr><td>13</td><td>Bagas Setiawan</td><td>Laki-laki</td><td>Sepak Bola</td><td>15</td></tr>
+                    <tr><td>14</td><td>Dinda Maharani</td><td>Perempuan</td><td>Membaca</td><td>13</td></tr>
+                    <tr><td>15</td><td>Reza Firmansyah</td><td>Laki-laki</td><td>Badminton</td><td>14</td></tr>
+                    <tr><td>16</td><td>Nisa Khairunnisa</td><td>Perempuan</td><td>Memasak</td><td>15</td></tr>
+                    <tr><td>17</td><td>Yoga Pratama</td><td>Laki-laki</td><td>Bersepeda</td><td>13</td></tr>
+                    <tr><td>18</td><td>Tiara Anindita</td><td>Perempuan</td><td>Menggambar</td><td>14</td></tr>
+                    <tr><td>19</td><td>Farhan Akbar</td><td>Laki-laki</td><td>Sepak Bola</td><td>14</td></tr>
+                    <tr><td>20</td><td>Alya Safitri</td><td>Perempuan</td><td>Membaca</td><td>15</td></tr>
+                    <tr><td>21</td><td>Raka Wijaya</td><td>Laki-laki</td><td>Bermain Game</td><td>13</td></tr>
+                    <tr><td>22</td><td>Fitri Handayani</td><td>Perempuan</td><td>Menulis</td><td>14</td></tr>
+                    <tr><td>23</td><td>Ilham Fauzi</td><td>Laki-laki</td><td>Bersepeda</td><td>15</td></tr>
+                    <tr><td>24</td><td>Keisha Putri</td><td>Perempuan</td><td>Menggambar</td><td>13</td></tr>
+                    <tr><td>25</td><td>Ardiansyah Putra</td><td>Laki-laki</td><td>Sepak Bola</td><td>14</td></tr>
+                    <tr><td>26</td><td>Melati Sari</td><td>Perempuan</td><td>Membaca</td><td>14</td></tr>
+                    <tr><td>27</td><td>Kevin Alfarizi</td><td>Laki-laki</td><td>Badminton</td><td>13</td></tr>
+                    <tr><td>28</td><td>Rani Oktaviani</td><td>Perempuan</td><td>Memasak</td><td>15</td></tr>
+                    <tr><td>29</td><td>Hafiz Ramadhan</td><td>Laki-laki</td><td>Bermain Game</td><td>14</td></tr>
+                    <tr><td>30</td><td>Vina Amelia</td><td>Perempuan</td><td>Menulis</td><td>13</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const initialData = [
+        { no: 1, nama: "Aditya Prakoso", jk: "Laki-laki", hobi: "Membaca", umur: 14 },
+        { no: 2, nama: "Bella Maharani", jk: "Perempuan", hobi: "Menggambar", umur: 13 },
+        { no: 3, nama: "Chandra Wijaya", jk: "Laki-laki", hobi: "Bersepeda", umur: 15 },
+        { no: 4, nama: "Dea Anggraini", jk: "Perempuan", hobi: "Membaca", umur: 14 },
+        { no: 5, nama: "Edo Saputra", jk: "Laki-laki", hobi: "Sepak Bola", umur: 13 },
+        { no: 6, nama: "Fina Lestari", jk: "Perempuan", hobi: "Menulis", umur: 15 },
+        { no: 7, nama: "Galih Ramadhan", jk: "Laki-laki", hobi: "Bermain Game", umur: 14 },
+        { no: 8, nama: "Hana Safitri", jk: "Perempuan", hobi: "Memasak", umur: 13 },
+        { no: 9, nama: "Iqbal Maulana", jk: "Laki-laki", hobi: "Sepak Bola", umur: 15 },
+        { no: 10, nama: "Jihan Permata", jk: "Perempuan", hobi: "Membaca", umur: 14 },
+        { no: 11, nama: "Kamil Fadillah", jk: "Laki-laki", hobi: "Menggambar", umur: 13 },
+        { no: 12, nama: "Laras Wulandari", jk: "Perempuan", hobi: "Bersepeda", umur: 15 },
+        { no: 13, nama: "Miko Firmansyah", jk: "Laki-laki", hobi: "Membaca", umur: 14 },
+        { no: 14, nama: "Nadia Putri", jk: "Perempuan", hobi: "Sepak Bola", umur: 13 },
+        { no: 15, nama: "Oki Setiawan", jk: "Laki-laki", hobi: "Badminton", umur: 15 },
+        { no: 16, nama: "Putri Amelia", jk: "Perempuan", hobi: "Menulis", umur: 14 },
+        { no: 17, nama: "Qori Alfarizi", jk: "Laki-laki", hobi: "Bermain Game", umur: 13 },
+        { no: 18, nama: "Rara Oktaviani", jk: "Perempuan", hobi: "Membaca", umur: 15 },
+        { no: 19, nama: "Satria Nugraha", jk: "Laki-laki", hobi: "Bersepeda", umur: 14 },
+        { no: 20, nama: "Tania Kusuma", jk: "Perempuan", hobi: "Menggambar", umur: 13 },
+        { no: 21, nama: "Umar Hakim", jk: "Laki-laki", hobi: "Sepak Bola", umur: 15 },
+        { no: 22, nama: "Vania Rahma", jk: "Perempuan", hobi: "Memasak", umur: 14 },
+        { no: 23, nama: "Wahyu Hidayat", jk: "Laki-laki", hobi: "Membaca", umur: 13 },
+        { no: 24, nama: "Xena Aprilia", jk: "Perempuan", hobi: "Badminton", umur: 15 },
+        { no: 25, nama: "Yudha Kurniawan", jk: "Laki-laki", hobi: "Bermain Game", umur: 14 },
+        { no: 26, nama: "Zahra Nabila", jk: "Perempuan", hobi: "Menulis", umur: 13 },
+        { no: 27, nama: "Bagus Pratama", jk: "Laki-laki", hobi: "Sepak Bola", umur: 14 },
+        { no: 28, nama: "Caca Febriani", jk: "Perempuan", hobi: "Membaca", umur: 15 },
+        { no: 29, nama: "Dimas Arya", jk: "Laki-laki", hobi: "Badminton", umur: 13 },
+        { no: 30, nama: "Elsa Kartika", jk: "Perempuan", hobi: "Menggambar", umur: 14 }
+    ];
+
+    let currentData = [...initialData];
+
+    function renderTable(data) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        data.forEach((row) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${row.no}</td>
+                <td contenteditable="true" onblur="updateCell(${row.no}, 'nama', this.innerText)">${row.nama}</td>
+                <td contenteditable="true" onblur="updateCell(${row.no}, 'jk', this.innerText)">${row.jk}</td>
+                <td contenteditable="true" onblur="updateCell(${row.no}, 'hobi', this.innerText)">${row.hobi}</td>
+                <td contenteditable="true" onblur="updateCell(${row.no}, 'umur', this.innerText)">${row.umur}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function populateHobbyDropdown() {
+        const hobbies = [...new Set(initialData.map(item => item.hobi))];
+        const select = document.getElementById('filterHobby');
+        select.innerHTML = '<option value="">Semua Hobi</option>';
+        hobbies.forEach(hobi => {
+            const opt = document.createElement('option');
+            opt.value = hobi;
+            opt.textContent = hobi;
+            select.appendChild(opt);
+        });
+    }
+
+    function updateCell(no, key, value) {
+        const target = currentData.find(item => item.no === no);
+        if (target) {
+            target[key] = key === 'umur' ? Number(value) : value.trim();
+        }
+    }
+
+    function applySort() {
+        const colIndex = parseInt(document.getElementById('sortCol').value);
+        const dir = document.getElementById('sortDir').value;
+        const keys = ['no', 'nama', 'jk', 'hobi', 'umur'];
+        const key = keys[colIndex];
+
+        currentData.sort((a, b) => {
+            let valA = a[key];
+            let valB = b[key];
+
+            if (typeof valA === 'string') {
+                return dir === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+            } else {
+                return dir === 'asc' ? valA - valB : valB - valA;
+            }
+        });
+
+        applyFilter();
+    }
+
+    function applyFilter() {
+        const gender = document.getElementById('filterGender').value;
+        const hobby = document.getElementById('filterHobby').value;
+
+        const filtered = currentData.filter(item => {
+            const matchGender = gender === '' || item.jk === gender;
+            const matchHobby = hobby === '' || item.hobi === hobby;
+            return matchGender && matchHobby;
+        });
+
+        renderTable(filtered);
+    }
+
+    function resetData() {
+        currentData = JSON.parse(JSON.stringify(initialData));
+        document.getElementById('filterGender').value = '';
+        document.getElementById('filterHobby').value = '';
+        renderTable(currentData);
+    }
+
+    // Quiz Checking Functions
+    function checkQ1() {
+        const selected = document.querySelector('input[name="q1"]:checked');
+        const feedback = document.getElementById('feedbackQ1');
+        if (!selected) {
+            feedback.innerHTML = '<span class="incorrect">Silakan pilih jawaban terlebih dahulu!</span>';
+            return;
+        }
+        if (selected.value === 'B') {
+            feedback.innerHTML = '<span class="correct">Tepat Sekali! Filter berfungsi menyembunyikan data yang tidak memenuhi kriteria secara sementara.</span>';
+        } else {
+            feedback.innerHTML = '<span class="incorrect">Kurang tepat. Jawaban yang benar adalah B (Filter).</span>';
+        }
+    }
+
+    function checkQ2() {
+        const input = document.getElementById('q2Input').value.trim().toUpperCase();
+        const feedback = document.getElementById('feedbackQ2');
+        if (input === 'A') {
+            feedback.innerHTML = '<span class="correct">Benar! Ascending mengurutkan data dari A ke Z, sehingga diawali huruf A.</span>';
+        } else {
+            feedback.innerHTML = '<span class="incorrect">Kurang tepat. Pengurutan Ascending (A-Z) selalu dimulai dari huruf "A".</span>';
+        }
+    }
+
+    function checkQ3() {
+        const selected = document.querySelector('input[name="q3"]:checked');
+        const feedback = document.getElementById('feedbackQ3');
+        if (!selected) {
+            feedback.innerHTML = '<span class="incorrect">Silakan pilih jawaban terlebih dahulu!</span>';
+            return;
+        }
+        if (selected.value === 'C') {
+            feedback.innerHTML = '<span class="correct">Benar! Sort Descending mengurutkan angka dari nilai terbesar ke terkecil.</span>';
+        } else {
+            feedback.innerHTML = '<span class="incorrect">Kurang tepat. Jawaban yang benar adalah C (Descending).</span>';
+        }
+    }
+
+    function checkQ4() {
+        const selected = document.querySelector('input[name="q4"]:checked');
+        const feedback = document.getElementById('feedbackQ4');
+        if (!selected) {
+            feedback.innerHTML = '<span class="incorrect">Silakan pilih jawaban terlebih dahulu!</span>';
+            return;
+        }
+        if (selected.value === 'C') {
+            feedback.innerHTML = '<span class="correct">Tepat! Abstraksi data berfokus menyajikan informasi relevan dan menyembunyikan detail sekunder.</span>';
+        } else {
+            feedback.innerHTML = '<span class="incorrect">Kurang tepat. Jawaban yang benar adalah C.</span>';
+        }
+    }
+
+    function checkQ5() {
+        const selected = document.querySelector('input[name="q5"]:checked');
+        const feedback = document.getElementById('feedbackQ5');
+        if (!selected) {
+            feedback.innerHTML = '<span class="incorrect">Silakan pilih jawaban terlebih dahulu!</span>';
+            return;
+        }
+        if (selected.value === 'A') {
+            feedback.innerHTML = '<span class="correct">Sempurna! Kita dapat menerapkan filter pada lebih dari satu kolom sekaligus (Multiple Filter).</span>';
+        } else {
+            feedback.innerHTML = '<span class="incorrect">Kurang tepat. Jawaban yang benar adalah A (Multiple Filter).</span>';
+        }
+    }
+
+    // Copy Table to Clipboard Function
+    function copyTableToClipboard() {
+        const table = document.getElementById('copasTable');
+        let range, selection;
+        
+        if (document.createRange && window.getSelection) {
+            range = document.createRange();
+            selection = window.getSelection();
+            selection.removeAllRanges();
+            try {
+                range.selectNodeContents(table);
+                selection.addRange(range);
+            } catch (e) {
+                range.selectNode(table);
+                selection.addRange(range);
+            }
+            document.execCommand('copy');
+            selection.removeAllRanges();
+            alert('Data tabel berhasil disalin! Silakan langsung Paste (Ctrl+V) di Microsoft Excel.');
+        }
+    }
+
+    // Initialize Page
+    populateHobbyDropdown();
+    renderTable(currentData);
+</script>
+
+</body>
+</html>
